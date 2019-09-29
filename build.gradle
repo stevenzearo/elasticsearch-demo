@@ -1,0 +1,35 @@
+apply from: file("${rootDir}/gradle/project.gradle")
+
+def coreNGVersion = '7.0.0'
+subprojects {
+    group = 'steve.canteen.reservation'
+    version = '1.0.0'
+
+    repositories {
+        maven {
+            url 'https://neowu.github.io/maven-repo/'
+            content {
+                includeGroupByRegex 'core\\.framework.*'
+            }
+        }
+    }
+    dependencies {
+        implementation "core.framework:core-ng:${coreNGVersion}"
+        implementation "core.framework:core-ng-search:${coreNGVersion}"
+        implementation "core.framework:core-ng-test:${coreNGVersion}"
+    }
+}
+
+configure(project(':elasticsearch-demo-service')) {
+    apply from: file("${rootDir}/gradle/app.gradle")
+    dependencies {
+        implementation project(':elasticsearch-demo-service-interface')
+    }
+}
+
+configure(project(':elasticsearch-demo-service-interface')) {
+    apply from: file("${rootDir}/gradle/lib.gradle")
+    dependencies {
+
+    }
+}
